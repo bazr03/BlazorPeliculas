@@ -1,0 +1,37 @@
+﻿@page "/"
+@inject IRepositorio repositorio
+
+<p>Hola @nombre.ToUpper(), bienvenido</p>
+
+
+<div>
+    <h3>Peliculas</h3>
+    <ListadoPeliculasComponent Peliculas="Peliculas" />
+</div>
+
+<button @onclick="AgregarPelicula">Agregar Película</button>
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+@code{
+    string nombre = "Iván";
+
+    List<Pelicula> Peliculas = new List<Pelicula>();
+
+    private Pelicula ObtenerPelicula()
+    {
+        return new Pelicula() { Titulo = "Spider-Man 10", Lanzamiento = new DateTime(2020, 11, 2) };
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(2000);
+        Peliculas = repositorio.ObtenerPelicuales();
+    }
+
+
+    private void AgregarPelicula()
+    {
+        Peliculas.Add(new Pelicula() { Titulo = "The Hulk", Lanzamiento = DateTime.Now });
+    }
+}
